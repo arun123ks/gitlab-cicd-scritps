@@ -1,0 +1,30 @@
+# Date: 2018-06-19
+
+stages:
+  - build
+  - test
+  - deploy
+
+
+build:
+  stage: build
+  script:
+   - /bin/bash /opt/scripts/build.sh
+    
+
+test:
+   stage: test
+   script:
+       - /bin/bash /opt/scripts/test.sh
+       
+deploy:
+    stage: deploy
+
+    script: 
+       - /bin/bash /opt/scripts/dplyprd.sh
+    only: 
+      refs:
+        - master
+        - merge_requests      
+       
+
