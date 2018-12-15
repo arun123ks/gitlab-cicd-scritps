@@ -1,0 +1,31 @@
+# Content of .gitlab-ci.yml
+# Author: Davi CCandido <davi@contentools.com>
+# Date: 2018-06-19
+
+stages:
+  - build
+  - test
+  - deploy
+
+
+build:
+  stage: build
+  script:
+   - pwd
+   - /bin/bash scripts/build.sh
+    
+
+test:
+   stage: test
+   script:
+       - /bin/bash scripts/test.sh
+deploy:
+    stage: deploy
+
+    script: 
+       - /bin/bash scripts/dplyprd.sh
+    only: 
+      refs:
+        - master
+        - merge_requests      
+       
