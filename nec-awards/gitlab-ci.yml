@@ -1,0 +1,13 @@
+image: alpine:latest
+stages:
+  - deploy
+deploy:
+    stage: deploy
+
+    script: 
+       - apk add -y lftp
+       - /bin/sh scripts/msf.sh 
+       - lftp -c "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; mirror -Rv public /public_html/pumps/necawards --overwrite --ignore-time --parallel=10"
+    only: 
+      refs:
+         - master
