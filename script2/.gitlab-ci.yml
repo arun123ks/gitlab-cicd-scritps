@@ -1,6 +1,4 @@
 # Content of .gitlab-ci.yml
-# Author: Davi CCandido <davi@contentools.com>
-# Date: 2018-06-19
 
 stages:
   - build
