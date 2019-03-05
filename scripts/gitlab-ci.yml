@@ -1,0 +1,57 @@
+# Content of .gitlab-ci.yml
+# comment 1
+stages:
+  - build
+  - test
+  - deploy
+
+
+build:
+  stage: build
+  script:
+   - pwd
+   - /bin/bash scripts/build.sh
+  only: 
+     refs:
+       - master
+       - development
+     
+    
+
+test:
+   stage: test
+   script:
+       - /bin/bash scripts/test.sh
+   only: 
+     refs:
+       - master
+       - development 
+       
+deploy_devlopment:
+  stage: deploy
+  script:
+    - echo "Deploying to devlopment server"
+    - /bin/bash scripts/dplydev.sh
+  environment:
+    name: devlopment
+    url: http://teststt
+  only: 
+     refs:
+       - master
+       - development    
+
+       
+deploy_production:
+    stage: deploy
+
+    script: 
+       - echo "Deploying to production server"
+       - scp -i /home/ubuntu/mpnv.pem -r /opt/analytics-tracking root@172.31.1.111:/opt/prod/
+       - ssh -i /home/ubuntu/mpnv.pem root@172.31.1.111 "sudo /bin/bash /opt/prod/analytics-tracking/scripts/dplyprd.sh"
+    environment:
+      name: production
+      url: http://172.31.1.111
+    only: 
+      refs:
+        - master
+        - merge_requests   
